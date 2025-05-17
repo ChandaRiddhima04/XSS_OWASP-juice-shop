@@ -1,0 +1,4 @@
+!pip install colab-xterm
+!apt update && apt install -y kali-linux
+!apt install -y nodejs npm
+!npx cowsay "Kali Linux Ready!"
