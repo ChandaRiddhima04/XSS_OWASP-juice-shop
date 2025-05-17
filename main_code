@@ -1,0 +1,28 @@
+import gradio as gr
+import requests
+
+# Function to test XSS
+def test_xss(target_url, payload):
+    try:
+        params = {"q": payload}
+        response = requests.get(target_url, params=params)
+
+        if payload in response.text:
+            return f"🚨 Vulnerable! The payload was executed. \nResponse: {response.text[:500]}"
+        else:
+            return f"✅ Not Vulnerable. No XSS detected. \nResponse: {response.text[:500]}"
+    except Exception as e:
+        return f"❌ Error: {str(e)}"
+
+# GUI Interface
+iface = gr.Interface(
+    fn=test_xss,
+    inputs=[gr.Textbox(label="Target URL"), gr.Textbox(label="XSS Payload")],
+    outputs="text",
+    title="XSS Testing Tool",
+    description="Enter the target URL and an XSS payload to test for vulnerabilities."
+)
+
+# Run GUI and host locally
+iface.launch(share=True)
+
